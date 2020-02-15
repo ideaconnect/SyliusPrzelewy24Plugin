@@ -43,7 +43,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
     public function setApi($api): void
     {
         if (false === is_array($api)) {
-            throw new UnsupportedApiException('Not supported.Expected to be set as array.');
+            throw new UnsupportedApiException('Not supported. Expected to be set as array.');
         }
 
         $this->przelewy24Bridge->setAuthorizationData($api['merchant_id'], $api['crc_key'], $api['environment']);
@@ -68,10 +68,10 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Generic
         $token = $request->getToken();
         $details['p24_session_id'] = uniqid();
         $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
-        $details['p24_url_return'] = $token->getAfterUrl();
-        $details['p24_url_cancel'] = $token->getAfterUrl() . '&' . http_build_query(['status' => Przelewy24BridgeInterface::CANCELLED_STATUS]);
+        $details['p24_url_return'] = $this->api['succcess_url'] ?: $token->getAfterUrl() ;
+        $details['p24_url_cancel'] =  $this->api['cancel_url'] ?: $token->getAfterUrl() . '&' . http_build_query(['status' => Przelewy24BridgeInterface::CANCELLED_STATUS]);
         $details['p24_wait_for_result'] = '1';
-        $details['p24_url_status'] = $notifyToken->getTargetUrl();
+        $details['p24_url_status'] = $this->api['status_url'] ?: $notifyToken->getTargetUrl();
         $details['token'] = $this->przelewy24Bridge->trnRegister($details->toUnsafeArray());
         $details['p24_status'] = Przelewy24BridgeInterface::CREATED_STATUS;
 
