@@ -37,7 +37,7 @@ Need some help or additional resources for a project? Write us an email on mikol
 
 ## Demo
 
-We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
+We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it.
 
 ## Installation
 
@@ -77,6 +77,21 @@ $ open http://localhost:8080
 $ bin/behat
 $ bin/phpspec run
 ```
+
+## Support for local testing
+
+Testing in local environments is problematic as often you do not want to expose your development instance to the public, outside world.
+This is a specially modified version which allows easier testing in local environments by using a proxy notifier.
+
+How this works?
+
+* Create the `config/packages/bit_bag_sylius_przelewy24.yaml` config file with contents:
+```yaml
+bit_bag_sylius_przelewy24:
+  fake_notify_url: http://example.com/some_fake_notifier_{token}
+```
+
+* Expose any
 
 ## Contribution
 
